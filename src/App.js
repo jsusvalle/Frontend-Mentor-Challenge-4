@@ -1,24 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useState, useEffect} from 'react';
+import CardAds from './CardAds';
+import Filter from './Filter';
 
 function App() {
+
+  const [data, saveData] = useState([]);
+
+  useEffect( () => {
+    const mostrarDB = async () => {
+      const response = await fetch('http://localhost:4000/users');
+      const result = await response.json();
+      saveData(result);
+    }
+    mostrarDB();
+  }, [])
+  
+  if(Object.keys(data).length === 0) return null;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="bg-LightGrayishCyanBG">
+      <div className="background-top h-48 bg-DarkCyan bg-center bg-cover"></div>
+      <Filter />
+
+      <div className="container mx-auto pt-6 px-4 lg:px-24">
+        {data.map(card => ( 
+            <CardAds
+              key={card.id}
+              card={card}
+            />
+        ))}
+      </div>
     </div>
   );
 }
