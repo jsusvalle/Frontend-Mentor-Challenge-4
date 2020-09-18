@@ -1,11 +1,20 @@
-import React, {Fragment} from 'react'
+import React, {useContext} from 'react'
+
+import {ListingContext} from '../context/ListingContext';
 
 const CardAds = ({card}) => {
 
+    let classNameCard;
     const {company, logo, featured, position, role, level, postedAt, contract, location, languages, tools} = card;
-    
+
+    const { handleTagClick } = useContext(ListingContext);
+
+    if(card.new && featured) {
+        classNameCard = 'border-l-4 border-DarkCyan';
+    }
+
     return ( 
-        <div className="shadow rounded bg-white mb-16 pb-4 relative md:grid md:grid-cols-6 md:items-center">
+        <div className={`shadow rounded bg-white mb-16 pb-4 relative md:grid md:grid-cols-6 md:items-center ${classNameCard}`}>
             <img className="absolute md:static -top-2 left-15 w-16 md:w-24 md:ml-auto md:mr-2" src={process.env.PUBLIC_URL + logo} alt=""/>
             <div className="pt-10 mx-6 md:col-span-3">
                 <div className="flex font-bold items-center">
@@ -21,20 +30,26 @@ const CardAds = ({card}) => {
                 </div>
             </div>
             <div className="mx-6 md:col-start-5 md:col-span-2">
-                <button className="button-filter">
+                <button className="button-filter transition duration-500 ease-in-out hover:bg-DarkCyan hover:text-white"
+                    onClick={() => handleTagClick(role)}
+                >
                     <p>{role}</p>
                 </button>
-                <button className="button-filter">
+                <button className="button-filter transition duration-500 ease-in-out hover:bg-DarkCyan hover:text-white"
+                    onClick={() => handleTagClick(level)}
+                >
                     <p>{level}</p>
                 </button>
                 {languages.map(language => (
-                    <button className="button-filter" 
+                    <button className="button-filter transition duration-500 ease-in-out hover:bg-DarkCyan hover:text-white"
+                        onClick={() => handleTagClick(language)}
                         key={language}>
                         <p>{language}</p>
                     </button>
                 ))}
                 {tools.map(tool => (
-                    <button className="button-filter" 
+                    <button className="button-filter transition duration-500 ease-in-out hover:bg-DarkCyan hover:text-white" 
+                        onClick={() => handleTagClick(tool)}
                         key={tool}>
                         <p>{tool}</p>
                     </button>
